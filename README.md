@@ -3,9 +3,9 @@ Computational appendix for the work on exploring local hidden variable models in
 
 ## Data and code for the NN-inspired Bell-type inequality
 The data folder include w, delta_w pairs LHV-Net found for l=1,2. Recall the inequality is
-$f_w(p) - f_w(p_{elegant}) <= \delta_w$
+$f_w(p) - f_w(p_{elegant}) \leq \delta_w$
 
-$f_w(p) = w * s_{111}(p) - (1-w) \Delta_l(p)$,
+$f_w(p) = w s_{111}(p) - (1-w) \Delta_l(p)$,
 
 where $\Delta_l(p)$ is a penalty for being non-symmetric and $s_{111}$ captures the strength of (1,1,1)-type outcomes. The parameter $w$ balances these two. Details in the paper. 
 
