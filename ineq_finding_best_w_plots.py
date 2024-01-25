@@ -85,33 +85,33 @@ def f_w_minus_f_w_Elegant(pabc, l, w, verbose=False):
     assert(np.isclose(np.sum(pabc),1)), "pabc not normalized. It sums to {}".format(np.sum(pabc))
 
     # Create permutation penalty term
-    samevalues_avg = np.mean(np.stack([pabc[index_tuple] for index_tuple in samevalues],axis=0),axis=0)
-    one_differents_avg = np.mean(np.stack([pabc[index_tuple] for index_tuple in one_differents],axis=0),axis=0)
-    all_differents_avg = np.mean(np.stack([pabc[index_tuple] for index_tuple in all_differents],axis=0),axis=0)
+    M_111 = np.mean(np.stack([pabc[index_tuple] for index_tuple in samevalues],axis=0),axis=0)
+    M_112 = np.mean(np.stack([pabc[index_tuple] for index_tuple in one_differents],axis=0),axis=0)
+    M_123 = np.mean(np.stack([pabc[index_tuple] for index_tuple in all_differents],axis=0),axis=0)
 
-    samevalues_pen = np.sum(np.stack([np.abs(samevalues_avg - pabc[index_tuple])**l for index_tuple in samevalues],axis=0),axis=0)
-    one_differents_pen = np.sum(np.stack([np.abs(one_differents_avg - pabc[index_tuple])**l for index_tuple in one_differents],axis=0),axis=0)
-    all_differents_pen = np.sum(np.stack([np.abs(all_differents_avg - pabc[index_tuple])**l for index_tuple in all_differents],axis=0),axis=0)
+    Delta_111 = np.sum(np.stack([np.abs(M_111 - pabc[index_tuple])**l for index_tuple in samevalues],axis=0),axis=0)
+    Delta_112 = np.sum(np.stack([np.abs(M_112 - pabc[index_tuple])**l for index_tuple in one_differents],axis=0),axis=0)
+    Delta_123 = np.sum(np.stack([np.abs(M_123 - pabc[index_tuple])**l for index_tuple in all_differents],axis=0),axis=0)
 
     # s_111 part:
     s_111 = pabc[0,0,0] + pabc[1,1,1] + pabc[2,2,2] + pabc[3,3,3]
 
     # asymmetry penalty:
-    Delta = samevalues_pen + one_differents_pen + all_differents_pen
+    Delta = Delta_111 + Delta_112 + Delta_123
 
     expression = w*s_111 - (1-w)* Delta - w*(100/256)
 
     if verbose:
         print("Evaluating inequality for l={}, w={}".format(l,w))
         print("Averages:")
-        print("M_111:",samevalues_avg)
-        print("M_112:",one_differents_avg)
-        print("M_123:",all_differents_avg)
+        print("M_111:",M_111)
+        print("M_112:",M_112)
+        print("M_123:",M_123)
         print()
         print("Penalties:")
-        print("Delta_111:",samevalues_pen)
-        print("Delta_112:",one_differents_pen)
-        print("Delta_123:",all_differents_pen)
+        print("Delta_111:",Delta_111)
+        print("Delta_112:",Delta_112)
+        print("Delta_123:",Delta_123)
         print()
         print("s_111:",s_111)
         print("Delta:", Delta)
