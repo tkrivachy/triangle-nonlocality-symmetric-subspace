@@ -2,7 +2,7 @@
 Computational appendix for the work on exploring local hidden variable models in the fully symmetric subspace of the triangle network.
 
 ## Data and code for the NN-inspired Bell-type inequality
-The ```data``` folder include w, delta_w pairs LHV-Net found for l=1,2. Recall the inequality is
+The ```data``` folder include $(w, delta_w)$ pairs LHV-Net found for l=1,2. Recall the inequality is
 
 $f_w(p) - f_w(p_{elegant}) \leq \delta_w$,
 
