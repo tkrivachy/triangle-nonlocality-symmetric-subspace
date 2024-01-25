@@ -149,7 +149,7 @@ ax.axhline(0,color='grey')
 
 ax.plot(ws_l2_coarse,-1*delta_ws_l2_coarse,'+-',label='LHV-Net',color='red',ms=7)
 ax.plot(ws_l2_coarse,p_111_is_025_values_l2_coarse, label=r'$s_{111}$=0.25',linestyle='--',alpha=0.8, color='#4d0180')
-ax.plot(ws_l2_coarse,p_high_s_111_values_l2_coarse, label=r'$s_{111}\approx 0.289$',linestyle='-.',alpha=0.8, color='#005719')
+ax.plot(ws_l2_coarse,p_high_s_111_values_l2_coarse, label=r'$s_{111}\approx 0.29$',linestyle='-.',alpha=0.8, color='#005719')
 ax.plot(ws_l2_coarse,p_squares_values_l2_coarse, label='Squares',linestyle=':',alpha=0.8, color='#4d0180')
 ax.plot(ws_l2_coarse,p_1_values_l2_coarse, label=r'$p(111)=1$',dashes=[2.5,6],alpha=0.8, color = '#4d0180')
 ax.axvline(optimal_w)
@@ -162,7 +162,7 @@ axins = inset_axes(ax, width=1.6, height=1.3, loc='lower left',
 axins.axhline(y=0,color='grey')
 axins.plot(ws_l2_fine,-1*delta_ws_l2_fine,'+-',label='LHV-Net',color='red',ms=7)
 axins.plot(ws_l2_fine,p_111_is_025_values_l2_fine, label=r'$s_{111}$=0.25',linestyle='--',alpha=0.8, color='#4d0180')
-axins.plot(ws_l2_fine,p_high_s_111_values_l2_fine, label=r'$s_{111}\approx 0.289$',linestyle='-.',alpha=0.8, color='#005719')
+axins.plot(ws_l2_fine,p_high_s_111_values_l2_fine, label=r'$s_{111}\approx 0.29$',linestyle='-.',alpha=0.8, color='#005719')
 axins.plot(ws_l2_fine,p_squares_values_l2_fine, label='Squares',linestyle=':',alpha=0.8, color='#4d0180')
 plt.axvline(optimal_w)
 
@@ -186,7 +186,7 @@ ax.axhline(0,color='grey')
 
 ax.plot(ws_l1_coarse,-1*delta_ws_l1_coarse,'+-',label='LHV-Net',color='red',ms=7)
 ax.plot(ws_l1_coarse,p_111_is_025_values_l1_coarse, label=r'$s_{111}$=0.25',linestyle='--',alpha=0.8, color='#4d0180')
-ax.plot(ws_l1_coarse,p_high_s_111_values_l1_coarse, label=r'$s_{111}\approx 0.289$',linestyle='-.',alpha=0.8, color='#005719')
+ax.plot(ws_l1_coarse,p_high_s_111_values_l1_coarse, label=r'$s_{111}\approx 0.29$',linestyle='-.',alpha=0.8, color='#005719')
 ax.plot(ws_l1_coarse,p_1_values_l1_coarse, label=r'$p(111)=1$',dashes=[2.5,6],alpha=0.8, color = '#4d0180')
 ax.axvline(optimal_w)
 
@@ -198,7 +198,7 @@ axins = inset_axes(ax, width=1.6, height=1.3, loc='lower left',
 axins.axhline(y=0,color='grey')
 axins.plot(ws_l1_fine,-1*delta_ws_l1_fine,'+-',label='LHV-Net',color='red',ms=7)
 axins.plot(ws_l1_fine,p_111_is_025_values_l1_fine, label=r'$s_{111}$=0.25',linestyle='--',alpha=0.8, color='#4d0180')
-axins.plot(ws_l1_fine,p_high_s_111_values_l1_fine, label=r'$s_{111}\approx 0.289$',linestyle='-.',alpha=0.8, color='#005719')
+axins.plot(ws_l1_fine,p_high_s_111_values_l1_fine, label=r'$s_{111}\approx 0.29$',linestyle='-.',alpha=0.8, color='#005719')
 axins.plot(ws_l1_fine,p_1_values_l1_fine, label=r'$p(111)=1$',dashes=[2.5,6],alpha=0.8, color = '#4d0180')
 axins.axvline(optimal_w)
 
