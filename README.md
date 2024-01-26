@@ -21,5 +21,7 @@ The distribution can be found in ```data/probs_high111.csv```, in lexicographic 
 
 The flags (forced to be determistic and discretized in a 100x100 grid), can be found in ```data/flags_high111.json```. An example python script for loading and plotting these flags, as well as analyzing the distribution, is provided (```flag_plotter_high111.py```)
 
+## Data for the local maps of the symmetric subspaces for $N=3,4,5,6$
+
 
 ## Mathematica code 
