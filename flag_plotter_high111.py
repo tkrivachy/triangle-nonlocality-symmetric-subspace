@@ -3,6 +3,13 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 import json
 
+# Original distribution from LHV-Net
+p_LHVNet = np.loadtxt('./data/probs_LHVNet_high111.csv')
+p_LHVNet = p_LHVNet.reshape((4,4,4))
+
+print("Loaded LHV-Net distribution with shape:", p_LHVNet.shape)
+print()
+
 # Load deterministic response functions (flags) from ./data/flags_high111.json
 with open('./data/flags_high111.json') as f:
     det_flags = json.load(f)
@@ -29,7 +36,7 @@ def det_flags_to_distribution(deterministic_flags):
     return p
 
 # Define colormap to be used
-colors = ['red','green','blue','yellow']
+colors = ['red','green','blue','orange']
 n_bins = 4  # Discretizes the interpolation into bins
 cmap_name = 'my_list'
 colormap = LinearSegmentedColormap.from_list(cmap_name, colors, N=n_bins)
@@ -59,23 +66,21 @@ def plot_det_flags(det_flags,pabc, p_elegant=None, p_111_is_025=None):
     plt.ylabel(r'$\alpha$')
 
     plt.subplot(2,2,4)
-    title_text = 'LHV-Net distribution (green square)'
-
     try:
-        plt.plot(p_elegant.flatten(),'ro',alpha=0.85,markersize=5)
-        title_text += '\nand Elegant distribution (red circle)'
+        plt.plot(p_elegant.flatten(),'o',color='green',alpha=0.55,markersize=5,label = 'Elegant')
     except:
         pass
     try:
-        plt.plot(p_111_is_025.flatten(),'v',alpha=0.85,markersize=5,color='orange')
-        title_text += '\nand s_111 = 0.25 distribution (orange triangle)'
+        plt.plot(p_111_is_025.flatten(),'s',color='orange',alpha=0.85,markersize=5,label=r'$s_{{111}} = 0.25$ (analytic)')
     except:
         pass
-    plt.plot(pabc.flatten(),'gs',alpha = 0.85,markersize=5)
-    plt.title(title_text)
+    plt.plot(p_from_detflags.flatten(),'rx',alpha = 0.85,markersize=5,label = 'LHV-Net det. approx.')
+    plt.plot(p_LHVNet.flatten(),'b+',alpha = 0.85,markersize=5,label = 'LHV-Net original')
     plt.xlabel('outcome')
     plt.ylabel('probability of outcome')
     plt.ylim(ymin=-0.002)
+    plt.legend(loc=(0.45,0.27))
+
 
     s_111 = pabc[0,0,0] + pabc[1,1,1] + pabc[2,2,2] + pabc[3,3,3]
 
@@ -97,7 +102,7 @@ def plot_det_flags(det_flags,pabc, p_elegant=None, p_111_is_025=None):
     Delta_1 = Delta_111_1 + Delta_112_1 + Delta_123_1
     Delta_2 = Delta_111_2 + Delta_112_2 + Delta_123_2
 
-    fig.suptitle(r"Response functions for LHV-Net distribution with $s_{{111}}\approx{}$.".format(s_111)+"\n"+r"$\Delta_1 = {}$".format(Delta_1) + "\n" + r"$\Delta_2 = {}$".format(Delta_2) , fontsize = 14)
+    fig.suptitle(r"Response functions for LHV-Net distribution's det. approx. with $s_{{111}}\approx{}$.".format(s_111)+"\n"+r"$\Delta_1 = {}$".format(Delta_1) + "\n" + r"$\Delta_2 = {}$".format(Delta_2) , fontsize = 14)
     plt.savefig('./plots/detflag_high111.png', bbox_inches="tight",dpi=300)
 
 
@@ -136,54 +141,85 @@ for index_tuple in one_differents:
 for index_tuple in all_differents:
     p_111_is_025[index_tuple] = 1/80
 
-pabc = det_flags_to_distribution(det_flags)
-plot_det_flags = plot_det_flags(det_flags,pabc,p_elegant=p_elegant,p_111_is_025=p_111_is_025)
+p_from_detflags = det_flags_to_distribution(det_flags)
+plot_det_flags = plot_det_flags(det_flags,p_from_detflags,p_elegant=p_elegant,p_111_is_025=p_111_is_025)
 
-# Means of values
-M_111 = np.mean(np.stack([pabc[index_tuple] for index_tuple in samevalues],axis=0),axis=0)
-M_112 = np.mean(np.stack([pabc[index_tuple] for index_tuple in one_differents],axis=0),axis=0)
-M_123 = np.mean(np.stack([pabc[index_tuple] for index_tuple in all_differents],axis=0),axis=0)
 
-# Standard deviations of values
-std_111 = np.std(np.stack([pabc[index_tuple] for index_tuple in samevalues],axis=0),axis=0)
-std_112 = np.std(np.stack([pabc[index_tuple] for index_tuple in one_differents],axis=0),axis=0)
-std_123 = np.std(np.stack([pabc[index_tuple] for index_tuple in all_differents],axis=0),axis=0)
+def get_statistics_of_distribution(name, pabc):
+    # Means of values
+    M_111 = np.mean(np.stack([pabc[index_tuple] for index_tuple in samevalues],axis=0),axis=0)
+    M_112 = np.mean(np.stack([pabc[index_tuple] for index_tuple in one_differents],axis=0),axis=0)
+    M_123 = np.mean(np.stack([pabc[index_tuple] for index_tuple in all_differents],axis=0),axis=0)
 
-# Max difference between values and means
-max_diff_111 = np.max(np.stack([np.abs(pabc[index_tuple] - M_111) for index_tuple in samevalues],axis=0),axis=0)
-max_diff_112 = np.max(np.stack([np.abs(pabc[index_tuple] - M_112) for index_tuple in one_differents],axis=0),axis=0)
-max_diff_123 = np.max(np.stack([np.abs(pabc[index_tuple] - M_123) for index_tuple in all_differents],axis=0),axis=0)
+    # Standard deviations of values
+    std_111 = np.std(np.stack([pabc[index_tuple] for index_tuple in samevalues],axis=0),axis=0)
+    std_112 = np.std(np.stack([pabc[index_tuple] for index_tuple in one_differents],axis=0),axis=0)
+    std_123 = np.std(np.stack([pabc[index_tuple] for index_tuple in all_differents],axis=0),axis=0)
 
-min_111 = np.min(np.stack([pabc[index_tuple] for index_tuple in samevalues],axis=0),axis=0)
-min_112 = np.min(np.stack([pabc[index_tuple] for index_tuple in one_differents],axis=0),axis=0)
-min_123 = np.min(np.stack([pabc[index_tuple] for index_tuple in all_differents],axis=0),axis=0)
+    # Max difference between values and means
+    max_diff_111 = np.max(np.stack([np.abs(pabc[index_tuple] - M_111) for index_tuple in samevalues],axis=0),axis=0)
+    max_diff_112 = np.max(np.stack([np.abs(pabc[index_tuple] - M_112) for index_tuple in one_differents],axis=0),axis=0)
+    max_diff_123 = np.max(np.stack([np.abs(pabc[index_tuple] - M_123) for index_tuple in all_differents],axis=0),axis=0)
 
-max_111 = np.max(np.stack([pabc[index_tuple] for index_tuple in samevalues],axis=0),axis=0)
-max_112 = np.max(np.stack([pabc[index_tuple] for index_tuple in one_differents],axis=0),axis=0)
-max_123 = np.max(np.stack([pabc[index_tuple] for index_tuple in all_differents],axis=0),axis=0)
+    min_111 = np.min(np.stack([pabc[index_tuple] for index_tuple in samevalues],axis=0),axis=0)
+    min_112 = np.min(np.stack([pabc[index_tuple] for index_tuple in one_differents],axis=0),axis=0)
+    min_123 = np.min(np.stack([pabc[index_tuple] for index_tuple in all_differents],axis=0),axis=0)
 
-print()
-print("Means:")
-print("M_111:",M_111)
-print("M_112:",M_112)
-print("M_123:",M_123)
-print()
-print("Standard deviations:")
-print("std_111:",std_111)
-print("std_112:",std_112)
-print("std_123:",std_123)
-print()
-print("Max differences:")
-print("max_diff_111:",max_diff_111)
-print("max_diff_112:",max_diff_112)
-print("max_diff_123:",max_diff_123)
-print()
-print("Min:")
-print("min_111:",min_111)
-print("min_112:",min_112)
-print("min_123:",min_123)
-print()
-print("Max:")
-print("max_111:",max_111)
-print("max_112:",max_112)
-print("max_123:",max_123)
+    max_111 = np.max(np.stack([pabc[index_tuple] for index_tuple in samevalues],axis=0),axis=0)
+    max_112 = np.max(np.stack([pabc[index_tuple] for index_tuple in one_differents],axis=0),axis=0)
+    max_123 = np.max(np.stack([pabc[index_tuple] for index_tuple in all_differents],axis=0),axis=0)
+
+    print()
+    print("--------------------------------------------------")
+    print("Statistics for",name,"distribution")
+    print()
+    print("Means:")
+    print("M_111:",M_111)
+    print("M_112:",M_112)
+    print("M_123:",M_123)
+    print()
+    print("Standard deviations:")
+    print("std_111:",std_111)
+    print("std_112:",std_112)
+    print("std_123:",std_123)
+    print()
+    print("Max differences:")
+    print("max_diff_111:",max_diff_111)
+    print("max_diff_112:",max_diff_112)
+    print("max_diff_123:",max_diff_123)
+    print()
+    print("Min:")
+    print("min_111:",min_111)
+    print("min_112:",min_112)
+    print("min_123:",min_123)
+    print()
+    print("Max:")
+    print("max_111:",max_111)
+    print("max_112:",max_112)
+    print("max_123:",max_123)
+    print("--------------------------------------------------")
+    print()
+
+get_statistics_of_distribution("original distribution of LHV-Net", p_LHVNet)
+get_statistics_of_distribution("deterimistic approximation of LHV-Net", p_from_detflags)
+
+
+# Just the distribution plots:
+plt.clf()
+plt.figure(figsize=(5, 4))
+try:
+    plt.plot(p_elegant.flatten(),'o',color='green',alpha=0.55,markersize=5,label = 'Elegant')
+except:
+    pass
+try:
+    plt.plot(p_111_is_025.flatten(),'s',color='orange',alpha=0.85,markersize=5,label=r'$s_{{111}} = 0.25$ (analytic)')
+except:
+    pass
+plt.plot(p_from_detflags.flatten(),'rx',alpha = 0.85,markersize=5,label = 'LHV-Net det. approx.')
+plt.plot(p_LHVNet.flatten(),'b+',alpha = 0.85,markersize=5,label = 'LHV-Net original')
+plt.xlabel('outcome')
+plt.ylabel('probability of outcome')
+plt.ylim(ymin=-0.002)
+plt.legend(loc=(0.45,0.27))
+
+plt.savefig('./plots/distribution_high111.png', bbox_inches="tight",dpi=300)
