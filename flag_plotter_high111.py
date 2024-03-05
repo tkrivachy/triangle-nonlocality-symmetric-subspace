@@ -169,6 +169,20 @@ def get_statistics_of_distribution(name, pabc):
     max_112 = np.max(np.stack([pabc[index_tuple] for index_tuple in one_differents],axis=0),axis=0)
     max_123 = np.max(np.stack([pabc[index_tuple] for index_tuple in all_differents],axis=0),axis=0)
 
+    l=2
+
+    Delta_111_2 = np.sum(np.stack([np.abs(M_111 - pabc[index_tuple])**l for index_tuple in samevalues],axis=0),axis=0)
+    Delta_112_2 = np.sum(np.stack([np.abs(M_112 - pabc[index_tuple])**l for index_tuple in one_differents],axis=0),axis=0)
+    Delta_123_2 = np.sum(np.stack([np.abs(M_123 - pabc[index_tuple])**l for index_tuple in all_differents],axis=0),axis=0)
+
+    l=1
+    Delta_111_1 = np.sum(np.stack([np.abs(M_111 - pabc[index_tuple])**l for index_tuple in samevalues],axis=0),axis=0)
+    Delta_112_1 = np.sum(np.stack([np.abs(M_112 - pabc[index_tuple])**l for index_tuple in one_differents],axis=0),axis=0)
+    Delta_123_1 = np.sum(np.stack([np.abs(M_123 - pabc[index_tuple])**l for index_tuple in all_differents],axis=0),axis=0)
+
+    Delta_1 = Delta_111_1 + Delta_112_1 + Delta_123_1
+    Delta_2 = Delta_111_2 + Delta_112_2 + Delta_123_2
+
     print()
     print("--------------------------------------------------")
     print("Statistics for",name,"distribution")
@@ -197,6 +211,18 @@ def get_statistics_of_distribution(name, pabc):
     print("max_111:",max_111)
     print("max_112:",max_112)
     print("max_123:",max_123)
+    print()
+    print("Delta (l=1):",Delta_1)
+    print("Delta_111_1:",Delta_111_1)
+    print("Delta_112_1:",Delta_112_1)
+    print("Delta_123_1:",Delta_123_1)
+    print()
+    print("Delta (l=2):",Delta_2)
+    print("Delta_111_2:",Delta_111_2)
+    print("Delta_112_2:",Delta_112_2)
+    print("Delta_123_2:",Delta_123_2)
+
+
     print("--------------------------------------------------")
     print()
 
