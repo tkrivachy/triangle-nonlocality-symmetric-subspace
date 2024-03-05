@@ -23,7 +23,7 @@ The distribution found by LHV-Net with $s_{111} \approx 0.289$ can be found in `
 
 The flags of the determistic, discretized approximation (flags discretized to a 100x100 grid), can be found in ```data/flags_high111.json```. An example python script for loading and plotting these flags, as well as analyzing the distribution, is provided (```flag_plotter_high111.py```)
 
-## Data for the local maps of the symmetric subspaces for $N=3,4,5,6$
+## Data and code for the local maps of the symmetric subspaces for $N=3,4,5,6$
 Data can be found in ```data/symmetric_subspace_maps/```, one csv for each of the four considered cardinalities (3,4,5,6). First three columns give the $s_{111}, s_{112}, s_{123}$ values, while the fourth column gives the lowest Euclidean distance that LHV-Net found between the target point with such $(s_{111}, s_{112}, s_{123})$ values and the set of local distributions (as approximated by LHV-Net).
 
 An accompanying python script is provided, ```symmetric_subspace_map_plotter.py```, which loads and plots this data. Moreover for cardinality 4, it plots the Elegant distribution and its noisy verison as well, where sources are given a finite visibility (see https://www.nature.com/articles/s41534-020-00305-x for details).
