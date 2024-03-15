@@ -28,4 +28,9 @@ Data can be found in ```data/symmetric_subspace_maps/```, one csv for each of th
 
 An accompanying python script is provided, ```symmetric_subspace_map_plotter.py```, which loads and plots this data. Moreover for cardinality 4, it plots the Elegant distribution and its noisy verison as well, where sources are given a finite visibility (see https://www.nature.com/articles/s41534-020-00305-x for details).
 
-## Mathematica code 
+## Mathematica notebook
+The Mathematica notebook ```flag_check.nb``` provides utilities to define flag models (local models), plot them, and compute the associated output distributions.
+A sample of this notebook can be found in ```plots/flag_check_sample_plot.pdf```, showing the kind of local model that can be plotted with this notebook.
+
+This notebook contains code that defines flags models as found in the paper, and compares the associated output distributions to the ones stated in the paper.
+
